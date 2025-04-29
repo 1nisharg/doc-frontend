@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocDynamo - OpenRAG</title>
+
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WXGTWLT7B7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-WXGTWLT7B7');
+</script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="sidebar-content">
+                <h2 class="sidebar-title">Upload Documents</h2>
+                
+                <!-- Toggle buttons for upload mode -->
+                <div class="upload-mode-toggle">
+                    <button class="mode-btn active" data-mode="file">
+                        <i class="fas fa-file-upload"></i> File Upload
+                    </button>
+                    <button class="mode-btn" data-mode="web">
+                        <i class="fas fa-globe"></i> Web Search 
+                    </button>
+                </div>
+            
+                <!-- File upload form -->
+                <form id="pdf-form" method="POST" enctype="multipart/form-data" class="upload-form">
+                    <div class="upload-container">
+                        <div class="drop-zone">
+                            <input type="file" name="docs" accept=".pdf,.docx,.zip,.rar" multiple>
+                            <label for="pdf-files" class="file-label">
+                                <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                                <span class="upload-text">Drop files here</span>
+                                <span class="upload-hint">or click to browse (max 5 files)</span>
+                            </label>
+                        </div>
+                        <div class="button-container">
+                            <button type="submit" class="btn-primary submit-btn" onclick="trackAndExecute(event, 'process_files')">
+                                <i class="fas fa-rocket"></i> Process Files
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            
+                <!-- Web URL form (hidden by default) -->
+                <form id="url-form" class="upload-form" style="display: none;">
+                    <div class="upload-container">
+                        <div class="url-input-container">
+                            <div class="url-inputs">
+                                <input type="url" class="url-input" placeholder="Enter PDF/DOCX URL">
+                            </div>
+                            <button type="button" class="btn-secondary add-url-btn">
+                                <i class="fas fa-plus"></i> Add Another URL
+                            </button>
+                        </div>
+                        <div class="button-container">
+                            <button type="submit" class="btn-primary submit-btn">
+                                <i class="fas fa-rocket"></i> Process URLs
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="uploaded-files">
+                    <h3><i class="fas fa-file-alt"></i> Processed Files</h3>
+                    <ul class="files-list">
+                        {% if uploaded_filenames or uploaded_urls %}
+                            {% for filename in uploaded_filenames %}
+                                <li class="file-item">
+                                    <i class="fas fa-file-pdf"></i>
+                                    {{ filename }}
+                                </li>
+                            {% endfor %}
+                            {% for url in uploaded_urls %}
+                                <li class="file-item">
+                                    <i class="fas fa-link"></i>
+                                    {{ url }}
+                                </li>
+                            {% endfor %}
+                        {% else %}
+                            <li class="no-files">No files processed yet</li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <form action="/start_over" method="POST" class="start-over-form">
+                    <button type="submit" class="btn-reset">
+                        <i class="fas fa-sync-alt"></i> Reset Session
+                    </button>
+                </form>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="main-header">
+                <div class="brand">
+                    <div class="brand-header">
+                        <span class="brand-icon">🧠</span>
+                        <span class="brand-name">DocDynamo</span>
+                    </div>
+                    <div class="brand-tagline">AI-Powered Document Intelligence</div>
+                </div>
+            </header>
+
+            <section class="chat-section">
+                {% if response %}
+                <div class="response-section">
+                    <div class="response-container">
+                        <i class="fas fa-robot response-icon"></i>
+                        <div class="response-content">
+                            <h3>AI Response</h3>
+                            <p>{{ response }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                <div id="additionalInfoSection" class="generated-content" style="display: none;">
+                    <h3><i class="fas fa-info-circle"></i> Additional Information</h3>
+                    <div class="additional-info-content">
+                        <p id="additionalInfoText"></p>
+                    </div>
+                </div>
+
+                {% if generated_questions %}
+                <div class="generated-content">
+                    <h3><i class="fas fa-question-circle"></i> Common Questions</h3>
+                    <ul class="questions-list">
+                        {% for question in generated_questions %}
+                            <li class="question-item">{{ question }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                {% if key_concepts %}
+                <div class="generated-content">
+                    <h3><i class="fas fa-lightbulb"></i> Key Concepts</h3>
+                    <ul class="concepts-list">
+                        {% for concept in key_concepts %}
+                            <li class="concept-item">{{ concept }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                <div id="mindmapSection" class="generated-content" style="display: none;">
+                    <h3><i class="fas fa-project-diagram"></i> Interactive Mindmap</h3>
+                    <div class="mindmap-container">
+                        <div id="mindmapVisualization"></div>
+                        <div class="mindmap-controls">
+                            <button onclick="downloadMindmapMD()" class="btn-secondary">
+                                <i class="fas fa-download"></i> Download Markdown
+                            </button>
+                        </div>
+                        
+                    </div>
+                </div>
+
+
+                <form method="POST" class="question-form" style="position: relative;">
+                    <div class="question-wrapper">
+                      <input 
+                        type="text" 
+                        name="question" 
+                        placeholder="Ask anything about your documents..." 
+                        required 
+                        class="question-input with-persona"
+                      >
+                  
+                      <div class="persona-container">
+                        <select name="persona" id="persona" class="inline-persona right-aligned">
+                          <option value="Student">🎓 Student</option>
+                          <option value="Researcher">🧪 Researcher</option>
+                          <option value="Working Professional">💼 Professional</option>
+                          <option value="Teacher">📚 Teacher</option>
+                          <option value="Product Manager">📈 Product Manager</option>
+                          <option value="Startup Founder">🚀 Founder</option>
+                          <option value="Developer">👨‍💻 Developer</option>
+                          <option value="Policy Maker">🏛️ Policy Maker</option>
+                          <option value="Investor">💰 Investor</option>
+                        </select>
+                      </div>
+                  
+                      <button type="submit" class="btn-ask">
+                        <i class="fas fa-paper-plane"></i>
+                      </button>
+                    </div>
+                  </form>
+            </section>
+            <div class="quick-actions">
+                <button onclick="trackAndExecute(event, 'generate_questions', generateQuestions)" class="quick-btn" data-tooltip="Ask AI-generated questions about your documents">🤔 Questions</button>
+                <button onclick="trackAndExecute(event, 'generate_concepts', generateConcepts)" class="quick-btn" data-tooltip="Extract key concepts from your documents">💡 Concepts</button>
+                <button onclick="trackAndExecute(event, 'get_additional_info', getAdditionalInfo)" class="quick-btn" data-tooltip="Get additional information and insights">ℹ️ Add-on Info</button>
+                <button onclick="trackAndExecute(event, 'generate_mindmap', generateMindmap)" class="quick-btn" data-tooltip="Visualize your document as a mindmap">🧠 Mindmap</button>
+            </div>
+
+
+            {% if recommendations %}
+            <section class="recommendations">
+                <h2 class="recommendations-title">
+                    <i class="fas fa-video"></i> Related Videos
+                </h2>
+                <div class="video-grid">
+                    {% for video in recommendations %}
+                    <a href="https://www.youtube.com/watch?v={{ video.video_id }}" 
+                       target="_blank" 
+                       class="video-link">
+                        <div class="video-card">
+                            <img src="{{ video.thumbnail_url }}" 
+                                 alt="Video thumbnail" 
+                                 class="video-thumbnail" 
+                                 loading="lazy">
+                            <div class="video-overlay">
+                                <i class="fas fa-play-circle"></i>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+
+            <footer class="main-footer">
+                <div class="footer-content">
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/open.rag?igsh=MWRvMmpmMDJ0Ym94NA==" 
+                           target="_blank" 
+                           class="social-link">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/company/openrag1/posts/?feedView=all" 
+                           target="_blank" 
+                           class="social-link">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="mailto:openrag189@gmail.com" class="social-link">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                    <p class="copyright">Powered by <strong>OpenRAG</strong> | © 2024</p>
+                </div>
+            </footer>
+        </main>
+    </div>
+    <script>
+         document.querySelectorAll('.quick-btn').forEach(button => {
+        const tooltip = document.createElement('div');
+        tooltip.classList.add('tooltip');
+        tooltip.innerText = button.getAttribute('data-tooltip');
+        document.body.appendChild(tooltip);
+
+        button.addEventListener('mouseenter', (event) => {
+            tooltip.style.display = 'block';
+            tooltip.style.left = event.pageX + 'px';
+            tooltip.style.top = event.pageY - 30 + 'px';
+        });
+        
+        button.addEventListener('mousemove', (event) => {
+            tooltip.style.left = event.pageX + 'px';
+            tooltip.style.top = event.pageY - 30 + 'px';
+        });
+
+        button.addEventListener('mouseleave', () => {
+            tooltip.style.display = 'none';
+        });
+    });
+        function trackAndExecute(event, action, callback) {
+            gtag('event', action, {
+                'event_category': 'User Interaction',
+                'event_label': action
+            });
+            if (callback) {
+                setTimeout(callback, 100); // Ensures tracking executes before function call
+            }
+        }
+        function generateMindmap() {
+            const button = document.querySelector('.quick-btn[data-tooltip*="mindmap"]');
+    const originalText = showLoading(button);
+
+    fetch('/generate_mindmap', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const section = document.getElementById('mindmapSection');
+            const visualization = document.getElementById('mindmapVisualization');
+            
+            // Store markdown content for download
+            visualization.setAttribute('data-markdown', data.markdown);
+            
+            // Insert the HTML content
+            visualization.innerHTML = data.html;
+            
+            // Update controls to include PDF download if available
+            if (data.pdf_available) {
+                const controls = section.querySelector('.mindmap-controls');
+                if (!controls.querySelector('.pdf-download-btn')) {
+                    const pdfBtn = document.createElement('button');
+                    pdfBtn.className = 'btn-secondary pdf-download-btn';
+                    pdfBtn.innerHTML = '<i class="fas fa-file-pdf"></i> Download PDF';
+                    pdfBtn.onclick = downloadMindmapPDF;
+                    controls.appendChild(pdfBtn);
+                }
+            }
+            
+            // Show the section
+            section.style.display = 'block';
+            section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else {
+            alert(data.error || 'Could not generate mindmap');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error generating mindmap');
+    })
+    .finally(() => hideLoading(button, originalText));
+}
+
+function downloadMindmapPDF() {
+    fetch('/download_mindmap_pdf')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to download PDF');
+        }
+        return response.blob();
+    })
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = "DocDynamo_Mindmap.pdf";
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error downloading PDF');
+    });
+}
+function downloadMindmapMD() {
+    fetch('/download_mindmap_md')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to download Markdown');
+        }
+        return response.blob();
+    })
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = "DocDynamo_Mindmap.md";
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error downloading Markdown');
+    });
+}
+
+        function getAdditionalInfo() {
+    const button = document.querySelector('.quick-btn:nth-child(3)');
+    const originalText = showLoading(button);
+
+    fetch('/get_additional_info', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const section = document.getElementById('additionalInfoSection');
+            const content = document.getElementById('additionalInfoText');
+            content.textContent = data.additional_info;
+            section.style.display = 'block';
+            
+            // Scroll section into view
+            section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else {
+            alert(data.error || 'Could not get additional information');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error getting additional information');
+    })
+    .finally(() => hideLoading(button, originalText));
+}
+        function showLoading(buttonElement) {
+            const originalText = buttonElement.innerHTML;
+            buttonElement.disabled = true;
+            buttonElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            return originalText;
+        }
+    
+        function hideLoading(buttonElement, originalText) {
+            buttonElement.disabled = false;
+            buttonElement.innerHTML = originalText;
+        }
+    
+        function generateQuestions() {
+            const button = document.querySelector('.btn-secondary:first-of-type');
+            const originalText = showLoading(button);
+    
+            fetch('/generate_questions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update the questions section without page reload
+                    const questionsSection = document.querySelector('.generated-content:has(.questions-list)') || 
+                                          createGeneratedSection('questions');
+                    
+                    const questionsList = questionsSection.querySelector('.questions-list') || 
+                                        document.createElement('ul');
+                    questionsList.className = 'questions-list';
+                    
+                    questionsList.innerHTML = data.questions.map(q => 
+                        `<li class="question-item">${q}</li>`
+                    ).join('');
+                    
+                    if (!questionsSection.querySelector('.questions-list')) {
+                        questionsSection.appendChild(questionsList);
+                    }
+                    
+                    // Add to chat section if not already present
+                    const chatSection = document.querySelector('.chat-section');
+                    if (!questionsSection.parentElement) {
+                        chatSection.insertBefore(questionsSection, chatSection.querySelector('.question-form'));
+                    }
+                }
+            })
+            .catch(error => console.error('Error:', error))
+            .finally(() => hideLoading(button, originalText));
+        }
+    
+        function generateConcepts() {
+            const button = document.querySelector('.btn-secondary:last-of-type');
+            const originalText = showLoading(button);
+    
+            fetch('/generate_concepts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update the concepts section without page reload
+                    const conceptsSection = document.querySelector('.generated-content:has(.concepts-list)') || 
+                                         createGeneratedSection('concepts');
+                    
+                    const conceptsList = conceptsSection.querySelector('.concepts-list') || 
+                                       document.createElement('ul');
+                    conceptsList.className = 'concepts-list';
+                    
+                    conceptsList.innerHTML = data.concepts.map(c => 
+                        `<li class="concept-item">${c}</li>`
+                    ).join('');
+                    
+                    if (!conceptsSection.querySelector('.concepts-list')) {
+                        conceptsSection.appendChild(conceptsList);
+                    }
+                    
+                    // Add to chat section if not already present
+                    const chatSection = document.querySelector('.chat-section');
+                    if (!conceptsSection.parentElement) {
+                        chatSection.insertBefore(conceptsSection, chatSection.querySelector('.question-form'));
+                    }
+                }
+            })
+            .catch(error => console.error('Error:', error))
+            .finally(() => hideLoading(button, originalText));
+        }
+    
+        function createGeneratedSection(type) {
+            const section = document.createElement('div');
+            section.className = 'generated-content';
+            
+            const heading = document.createElement('h3');
+            if (type === 'questions') {
+                heading.innerHTML = '<i class="fas fa-question-circle"></i> Common Questions';
+            } else {
+                heading.innerHTML = '<i class="fas fa-lightbulb"></i> Key Concepts';
+            }
+            
+            section.appendChild(heading);
+            return section;
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+    const modeBtns = document.querySelectorAll('.mode-btn');
+    const fileForm = document.getElementById('pdf-form');
+    const urlForm = document.getElementById('url-form');
+    const addUrlBtn = document.querySelector('.add-url-btn');
+
+    // Toggle between upload modes
+    modeBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            modeBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            if (this.dataset.mode === 'file') {
+                fileForm.style.display = 'block';
+                urlForm.style.display = 'none';
+            } else {
+                fileForm.style.display = 'none';
+                urlForm.style.display = 'block';
+            }
+        });
+    });
+
+    // Add new URL input field
+    addUrlBtn.addEventListener('click', function() {
+        const urlInputs = document.querySelector('.url-inputs');
+        const newInput = document.createElement('input');
+        newInput.type = 'url';
+        newInput.className = 'url-input';
+        newInput.placeholder = 'Enter PDF/DOCX URL';
+        urlInputs.appendChild(newInput);
+    });
+
+    // Handle URL form submission
+    urlForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const urls = Array.from(urlForm.querySelectorAll('.url-input'))
+            .map(input => input.value.trim())
+            .filter(url => url);
+
+        if (urls.length === 0) {
+            alert('Please enter at least one valid URL');
+            return;
+        }
+
+        const submitBtn = urlForm.querySelector('.submit-btn');
+        const originalText = showLoading(submitBtn);
+
+        fetch('/process_urls', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ urls })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert(data.error || 'Error processing URLs');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error processing URLs');
+        })
+        .finally(() => {
+            hideLoading(submitBtn, originalText);
+        });
+    });
+});
+    </script>
+</body>
+</html>

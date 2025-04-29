@@ -1,0 +1,741 @@
+/* Base Styles & Reset */
+:root {
+    --bg-primary: #0a0c0f;
+    --bg-secondary: #12141a;
+    --bg-tertiary: #1a1d25;
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+    --accent-primary: #4f46e5;
+    --accent-secondary: #3730a3;
+    --accent-gradient: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+    --danger: #ef4444;
+    --success: #10b981;
+    --border-color: #2a2d35;
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+}
+
+/* [Previous CSS remains the same until .button-container] */
+/* Question form container */
+.question-form {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  .question-wrapper {
+    position: relative;
+    width: 100%;    
+    display: flex;
+  }
+  
+  /* Persona container - taking up 25% of right side */
+  .persona-container {
+    position: absolute;
+    right: 80px; /* Space for the submit button */
+    top: 0;
+    bottom: 0;
+    width: 25%;
+    max-width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    pointer-events: none; /* Let clicks pass through to the input */
+  }
+  
+  /* Persona selector styling */
+  .inline-persona {
+    background-color: transparent;
+    border: none;
+    color: #a0a0a0;
+    font-size: 14px;
+    padding: 4px 24px 4px 8px;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 3px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+    pointer-events: auto; /* Make the select element clickable */
+  }
+  
+  /* Style the dropdown options */
+  .inline-persona option {
+    background-color: #1e1e1e; /* Dark background to match your app */
+    color: #ffffff;
+    padding: 8px;
+  }
+  
+  .inline-persona option:hover,
+  .inline-persona option:focus {
+    background-color: #4f46e5; /* Highlight color for selected item */
+  }
+  
+  .inline-persona:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+  }
+  
+  .inline-persona:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.3);
+  }
+  
+  /* Style the select arrow */
+  .inline-persona {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23a0a0a0' d='M6 8.825L1.175 4 2.238 2.938 6 6.7l3.763-3.762L10.825 4z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 4px center;
+  }
+  
+  /* Input styling */
+  .question-input {
+    flex: 1;
+    width: 100%;
+    padding: 12px;
+    padding-right: calc(25% + 60px); /* Make space for persona selector and button */
+    border-radius: 24px;
+    border: 1px solid #333;
+    background-color: #121212;
+    color: #ffffff;
+    font-size: 16px;
+  }
+  
+  /* Button styling */
+  .btn-ask {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 15;
+  }
+  
+  /* For better mobile experience */
+  @media (max-width: 480px) {
+    .persona-container {
+      width: 35%;
+    }
+    
+    .question-input {
+      padding-right: calc(35% + 50px);
+    }
+  }
+
+  
+.mindmap-container {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#mindmapVisualization {
+    width: 100%;
+    min-height: 500px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.mindmap-controls {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+
+.document-actions {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.tooltip {
+        position: absolute;
+        background-color: #333;
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 12px;
+        display: none;
+        white-space: nowrap;
+}
+
+.btn-secondary {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--accent-primary);
+    padding: 1rem;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-secondary:hover {
+    background-color: var(--accent-primary);
+    color: white;
+}
+
+.generated-content {
+    background-color: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-lg);
+}
+
+.generated-content h3 {
+    color: var(--accent-primary);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.questions-list,
+.concepts-list {
+    list-style: none;
+}
+
+.question-item,
+.concept-item {
+    padding: 1rem;
+    background-color: var(--bg-tertiary);
+    border-radius: var(--radius-sm);
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.question-item:hover,
+.concept-item:hover {
+    transform: translateX(5px);
+    background-color: var(--accent-primary);
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Space Grotesk', sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+/* Layout */
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 400px;
+    background-color: var(--bg-secondary);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+}
+
+.sidebar-content {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+.sidebar-title {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: var(--text-primary);
+}
+
+/* Upload Area */
+.drop-zone {
+    border: 2px solid var(--accent-primary);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    text-align: center;
+    background-color: var(--bg-tertiary);
+    transition: all 0.3s ease;
+}
+
+.drop-zone:hover {
+    border-color: var(--accent-secondary);
+    background-color: rgba(79, 70, 229, 0.1);
+}
+
+.upload-icon {
+    font-size: 2.5rem;
+    color: var(--accent-primary);
+    margin-bottom: 1rem;
+}
+
+.upload-text {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0.5rem 0;
+}
+
+.upload-hint {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Buttons */
+
+.quick-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    margin-top: 2rem;
+}
+
+.quick-btn {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    padding: 0.5rem 2rem;
+    border-radius: 50px; /* Change to large curved border */
+    font-size: 0.9rem; /* Slightly adjusted for better readability */
+    font-family: 'Space Grotesk', sans-serif; /* Ensure font consistency */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.quick-btn:hover {
+    background-color: var(--accent-primary);
+    color: white;
+}
+
+.btn-primary {
+    background: var(--accent-gradient);
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.btn-reset {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    padding: 0.8rem 1.5rem;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-reset:hover {
+    background-color: var(--danger);
+    border-color: var(--danger);
+}
+
+/* Uploaded Files */
+.uploaded-files {
+    margin-top: 2rem;
+}
+
+.uploaded-files h3 {
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.files-list {
+    list-style: none;
+}
+
+.file-item {
+    padding: 0.8rem;
+    background-color: var(--bg-tertiary);
+    border-radius: var(--radius-sm);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.file-item i {
+    color: var(--accent-primary);
+}
+
+.no-files {
+    color: var(--text-secondary);
+    text-align: center;
+    padding: 1rem;
+    font-style: italic;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    margin-left: 400px;
+    padding: 2rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Brand */
+.brand {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.brand-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.brand-icon {
+    font-size: 2.5rem;
+}
+
+.brand-name {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.brand-tagline {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+}
+
+/* Chat Section */
+.chat-section {
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.response-section {
+    margin-bottom: 2rem;
+}
+
+.response-container {
+    background-color: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    box-shadow: var(--shadow-lg);
+}
+
+.response-icon {
+    font-size: 1.5rem;
+    color: var(--accent-primary);
+}
+
+.response-content h3 {
+    color: var(--accent-primary);
+    margin-bottom: 0.5rem;
+}
+
+.question-container {
+    display: flex;
+    gap: 1rem;
+    margin-top: 5rem;
+}
+
+.question-input {
+    flex: 1;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border-radius: var(--radius-lg);
+    font-size: 1rem;
+}
+
+.question-input:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+}
+
+.btn-ask {
+    background: var(--accent-gradient);
+    color: white;
+    border: none;
+    width: 50px;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+}
+
+
+/* Video Recommendations */
+.recommendations {
+    margin-top: 3rem;
+}
+
+.recommendations-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+}
+
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.video-card {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.video-thumbnail {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+}
+
+/* [Previous CSS remains the same until the button container] */
+
+/* Button Container - Adding proper spacing */
+.button-container {
+    margin-top: 2rem;
+    padding: 0 0.5rem;
+}
+
+/* Brand Section - Restructured for better alignment */
+.brand {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem 0;
+}
+
+.brand-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.brand-icon {
+    font-size: 2.5rem;
+}
+
+.brand-name {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.brand-tagline {
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    letter-spacing: 0.5px;
+    margin-top: 1rem;
+}
+
+/* Footer - Improved alignment */
+.main-footer {
+    margin-top: auto;
+    padding: 2rem 0;
+    
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.social-links {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+}
+
+.social-link {
+    color: var(--text-secondary);
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+    padding: 0.5rem;
+    border-radius: 50%;
+    background-color: var(--bg-secondary);
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.social-link:hover {
+    color: var(--text-primary);
+    background-color: var(--accent-primary);
+    transform: translateY(-2px);
+}
+
+.copyright {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.copyright strong {
+    color: var(--text-primary);
+}
+
+/* Add these new styles to your existing CSS file */
+
+.upload-mode-toggle {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.mode-btn {
+    flex: 1;
+    padding: 1rem;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.mode-btn.active {
+    background-color: var(--accent-primary);
+    border-color: var(--accent-primary);
+}
+
+.mode-btn:hover {
+    background-color: var(--accent-primary);
+    border-color: var(--accent-primary);
+}
+
+.url-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.url-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.url-input {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+}
+
+.url-input:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+}
+
+.add-url-btn {
+    align-self: flex-start;
+    padding: 0.5rem 1rem;
+}
+
+
+/* Update the existing .file-item style */
+.file-item {
+    padding: 0.8rem;
+    background-color: var(--bg-tertiary);
+    border-radius: var(--radius-sm);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    word-break: break-all;  /* Add this line to handle long URLs */
+}
