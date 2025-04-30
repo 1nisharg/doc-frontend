@@ -15,7 +15,10 @@
   gtag('config', 'G-WXGTWLT7B7');
 </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- Flask CSS 
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> 
+    -->
+    <link rel="stylesheet" href="/static/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -38,11 +41,12 @@
                 <form id="pdf-form" method="POST" enctype="multipart/form-data" class="upload-form">
                     <div class="upload-container">
                         <div class="drop-zone">
-                            <input type="file" name="docs" accept=".pdf,.docx,.zip,.rar" multiple>
-                            <label for="pdf-files" class="file-label">
+                            <input type="file" id="pdf-files" name="docs" accept=".pdf,.docx,.zip,.rar" multiple hidden>
+                            <label class="file-label">
                                 <i class="fas fa-cloud-upload-alt upload-icon"></i>
                                 <span class="upload-text">Drop files here</span>
-                                <span class="upload-hint">or click to browse (max 5 files)</span>
+                                <span class="upload-hint">or <span class="upload-button">browse</span></span>
+                                <span class="upload-support">(Maximum 5 Files)</span>
                             </label>
                         </div>
                         <div class="button-container">
@@ -587,6 +591,51 @@ function downloadMindmapMD() {
         });
     });
 });
+
+const dropZone = document.querySelector('.drop-zone');
+const dropText = document.querySelector('.upload-text');
+const uploadButton = document.querySelector('.upload-button');
+const dropInput = document.querySelector('#pdf-files');
+let file;
+
+uploadButton.onclick = ()=>{
+    dropInput.click();
+}
+
+dropInput.addEventListener('change',(e)=>{
+    files = e.target.files;
+    if (files.length > 5) {
+        alert('You can only upload upto 5 files');
+        e.target.value = '';
+    }else{
+        console.log(files);
+    }
+});
+
+//when the file is inside the drop zone
+dropZone.addEventListener('dragover',(e)=>{
+    e.preventDefault();
+    dropText.textContent = "Release the file";
+    dropZone.classList.add('drag-over');
+});
+
+//when the file leaves the drop zone
+dropZone.addEventListener('dragleave',(e)=>{
+    dropText.textContent = 'Drop files here';
+    dropZone.classList.remove('drag-over');
+});
+
+//when the file gets dropped in the drop zone
+dropZone.addEventListener('drop',(e)=>{
+    e.preventDefault();
+    files = e.dataTransfer.files;
+    if(files.length > 5){
+        alert('You can only upload upto 5 files');
+    }else{
+        console.log(file);
+    }
+});
+
     </script>
 </body>
 </html>

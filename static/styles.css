@@ -23,18 +23,19 @@
 .question-form {
     width: 100%;
     max-width: 100%;
-  }
-  
-  .question-wrapper {
+}
+
+.question-wrapper {
     position: relative;
-    width: 100%;    
+    width: 100%;
     display: flex;
-  }
-  
-  /* Persona container - taking up 25% of right side */
-  .persona-container {
+}
+
+/* Persona container - taking up 25% of right side */
+.persona-container {
     position: absolute;
-    right: 80px; /* Space for the submit button */
+    right: 80px;
+    /* Space for the submit button */
     top: 0;
     bottom: 0;
     width: 25%;
@@ -42,11 +43,12 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    pointer-events: none; /* Let clicks pass through to the input */
-  }
-  
-  /* Persona selector styling */
-  .inline-persona {
+    pointer-events: none;
+    /* Let clicks pass through to the input */
+}
+
+/* Persona selector styling */
+.inline-persona {
     background-color: transparent;
     border: none;
     color: #a0a0a0;
@@ -59,53 +61,57 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     width: 100%;
-    pointer-events: auto; /* Make the select element clickable */
-  }
-  
-  /* Style the dropdown options */
-  .inline-persona option {
-    background-color: #1e1e1e; /* Dark background to match your app */
+    pointer-events: auto;
+    /* Make the select element clickable */
+}
+
+/* Style the dropdown options */
+.inline-persona option {
+    background-color: #1e1e1e;
+    /* Dark background to match your app */
     color: #ffffff;
     padding: 8px;
-  }
-  
-  .inline-persona option:hover,
-  .inline-persona option:focus {
-    background-color: #4f46e5; /* Highlight color for selected item */
-  }
-  
-  .inline-persona:hover {
+}
+
+.inline-persona option:hover,
+.inline-persona option:focus {
+    background-color: #4f46e5;
+    /* Highlight color for selected item */
+}
+
+.inline-persona:hover {
     background-color: rgba(255, 255, 255, 0.1);
     color: #ffffff;
-  }
-  
-  .inline-persona:focus {
+}
+
+.inline-persona:focus {
     outline: none;
     box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.3);
-  }
-  
-  /* Style the select arrow */
-  .inline-persona {
+}
+
+/* Style the select arrow */
+.inline-persona {
     background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23a0a0a0' d='M6 8.825L1.175 4 2.238 2.938 6 6.7l3.763-3.762L10.825 4z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 4px center;
-  }
-  
-  /* Input styling */
-  .question-input {
+}
+
+/* Input styling */
+.question-input {
     flex: 1;
     width: 100%;
     padding: 12px;
-    padding-right: calc(25% + 60px); /* Make space for persona selector and button */
+    padding-right: calc(25% + 60px);
+    /* Make space for persona selector and button */
     border-radius: 24px;
     border: 1px solid #333;
     background-color: #121212;
     color: #ffffff;
     font-size: 16px;
-  }
-  
-  /* Button styling */
-  .btn-ask {
+}
+
+/* Button styling */
+.btn-ask {
     position: absolute;
     right: 12px;
     top: 50%;
@@ -121,26 +127,26 @@
     justify-content: center;
     cursor: pointer;
     z-index: 15;
-  }
-  
-  /* For better mobile experience */
-  @media (max-width: 480px) {
-    .persona-container {
-      width: 35%;
-    }
-    
-    .question-input {
-      padding-right: calc(35% + 50px);
-    }
-  }
+}
 
-  
+/* For better mobile experience */
+@media (max-width: 480px) {
+    .persona-container {
+        width: 35%;
+    }
+
+    .question-input {
+        padding-right: calc(35% + 50px);
+    }
+}
+
+
 .mindmap-container {
     background: white;
     border-radius: 8px;
     padding: 20px;
     margin-top: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 #mindmapVisualization {
@@ -166,14 +172,14 @@
 }
 
 .tooltip {
-        position: absolute;
-        background-color: #333;
-        color: #fff;
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 12px;
-        display: none;
-        white-space: nowrap;
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    display: none;
+    white-space: nowrap;
 }
 
 .btn-secondary {
@@ -292,22 +298,40 @@ body {
     background-color: rgba(79, 70, 229, 0.1);
 }
 
+.drag-over{
+    border-color: var(--accent-secondary);
+    background-color: rgba(79, 70, 229, 0.1);
+}
+
 .upload-icon {
-    font-size: 2.5rem;
+    font-size: 2.9rem;
     color: var(--accent-primary);
-    margin-bottom: 1rem;
+    margin-bottom: 0.2rem;
 }
 
 .upload-text {
     font-size: 1.2rem;
     font-weight: 600;
     color: var(--text-primary);
-    margin: 0.5rem 0;
+    margin-top: 0.3rem;
 }
 
 .upload-hint {
     color: var(--text-secondary);
-    font-size: 0.9rem;
+    font-size: 1.1rem;
+}
+
+.upload-support {
+    color: var(--text-secondary);
+    font-size: 0.86rem;
+}
+
+.upload-button{
+    color: var(--accent-primary);
+}
+
+.upload-button:hover{
+    cursor: pointer;
 }
 
 /* Buttons */
@@ -325,9 +349,12 @@ body {
     color: var(--text-primary);
     border: 1px solid var(--border-color);
     padding: 0.5rem 2rem;
-    border-radius: 50px; /* Change to large curved border */
-    font-size: 0.9rem; /* Slightly adjusted for better readability */
-    font-family: 'Space Grotesk', sans-serif; /* Ensure font consistency */
+    border-radius: 50px;
+    /* Change to large curved border */
+    font-size: 0.9rem;
+    /* Slightly adjusted for better readability */
+    font-family: 'Space Grotesk', sans-serif;
+    /* Ensure font consistency */
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -616,7 +643,7 @@ body {
 .main-footer {
     margin-top: auto;
     padding: 2rem 0;
-    
+
 }
 
 .footer-content {
@@ -737,5 +764,13 @@ body {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    word-break: break-all;  /* Add this line to handle long URLs */
+    word-break: break-all;
+    /* Add this line to handle long URLs */
+}
+
+.file-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
