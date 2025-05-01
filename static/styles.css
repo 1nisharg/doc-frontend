@@ -226,17 +226,18 @@
 }
 
 .generated-content .common-quest svg{
-    padding-right: 7px;
+    padding-right: 25px;
 }
 
 .generated-content .common-quest{
-    padding-right: 5px;
+    padding-right: 45px;
     gap: 0;
 }
 
 .generated-content .common-quest p{
-    padding-right: 38px;
+    padding-left: 37px;
     gap: 0;
+    position: absolute;
 }
 
 .questions-list,
