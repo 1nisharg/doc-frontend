@@ -77,7 +77,7 @@
                 </form>
 
                 <div class="uploaded-files">
-                    <h3><i class="fas fa-file-alt"></i> Processed Files</h3>
+                    <h3 class="proccess-files"><i class="fas fa-file-alt"></i> Processed Files</h3>
                     <ul class="files-list">
                         {% if uploaded_filenames or uploaded_urls %}
                             {% for filename in uploaded_filenames %}
@@ -132,7 +132,7 @@
                 </div>
                 {% endif %}
                 <div id="additionalInfoSection" class="generated-content" style="display: none;">
-                    <h3><i class="fas fa-info-circle"></i> Additional Information</h3>
+                    <h3><i class="fas fa-info-circle response-icon"></i> Additional Information</h3>
                     <div class="additional-info-content">
                         <p id="additionalInfoText"></p>
                     </div>
@@ -140,7 +140,7 @@
 
                 {% if generated_questions %}
                 <div class="generated-content">
-                    <h3><i class="fas fa-question-circle"></i> Common Questions</h3>
+                    <h3><i class="fas fa-question-circle response-icon"></i> Common Questions</h3>
                     <ul class="questions-list">
                         {% for question in generated_questions %}
                             <li class="question-item">{{ question }}</li>
@@ -151,7 +151,7 @@
 
                 {% if key_concepts %}
                 <div class="generated-content">
-                    <h3><i class="fas fa-lightbulb"></i> Key Concepts</h3>
+                    <h3><i class="fas fa-lightbulb response-icon"></i> Key Concepts</h3>
                     <ul class="concepts-list">
                         {% for concept in key_concepts %}
                             <li class="concept-item">{{ concept }}</li>
@@ -222,12 +222,13 @@
                        target="_blank" 
                        class="video-link">
                         <div class="video-card">
-                            <img src="{{ video.thumbnail_url }}" 
+                            <!-- src="{{ video.thumbnail_url }}"  -->
+                            <img src="/static/image.png"
                                  alt="Video thumbnail" 
                                  class="video-thumbnail" 
                                  loading="lazy">
                             <div class="video-overlay">
-                                <i class="fas fa-play-circle"></i>
+                                <i class="fas fa-play-circle play-btn"></i>
                             </div>
                         </div>
                     </a>
