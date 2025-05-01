@@ -223,7 +223,26 @@
     margin-bottom: 1rem;
     display: flex;
     align-items: center;
-    gap: 0.7rem;
+    gap: 0.6rem;
+}
+
+.generated-content h3 svg{
+    padding-bottom: 4px;
+}
+
+.generated-content .common-quest svg{
+    padding-right: 25px;
+}
+
+.generated-content .common-quest{
+    padding-right: 45px;
+    gap: 0;
+}
+
+.generated-content .common-quest p{
+    padding-left: 37px;
+    gap: 0;
+    position: absolute;
 }
 
 .questions-list,
@@ -376,7 +395,7 @@ body {
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.4rem;
     transition: all 0.3s ease;
     font-weight: 500;
 }
@@ -504,7 +523,9 @@ body {
 }
 
 .brand-icon {
-    font-size: 144px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .brand-name {
