@@ -370,7 +370,7 @@ body {
 .quick-actions {
     display: flex;
     justify-content: center;
-    gap: 1rem;
+    gap: 1.9rem;
     margin-bottom: 3rem;
     margin-top: 2rem;
 }
@@ -536,7 +536,7 @@ body {
 
 /* Chat Section */
 .chat-section {
-    max-width: 800px;
+    max-width: 870px;
     margin: 0 auto;
     width: 100%;
 }
