@@ -32,7 +32,6 @@
                 <!-- Toggle buttons for upload mode -->
                 <div class="upload-mode-toggle">
                     <button class="mode-btn active" data-mode="file">
-                        <!-- <i class="fas fa-file-upload"></i> -->
                         <svg height="15px" width="15px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 503.467 503.467"
                             xml:space="preserve" fill="#000000">
@@ -99,7 +98,6 @@
                 </form>
 
                 <div class="uploaded-files">
-                    <!-- <h3 class="proccess-files"><i class="fas fa-file-alt"></i> Processed Files</h3> -->
                     <h3><svg viewBox="0 0 32 32" height="22px" width="17px" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -122,7 +120,6 @@
                         {% if uploaded_filenames or uploaded_urls %}
                         {% for filename in uploaded_filenames %}
                         <li class="file-item">
-                            <!-- <i class="fas fa-file-pdf"></i> -->
                             <svg height="20px" width="16px" version="1.1" id="Layer_1"
                                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                 viewBox="0 0 503.467 503.467" xml:space="preserve" fill="#000000">
@@ -150,7 +147,6 @@
                         {% endfor %}
                         {% for url in uploaded_urls %}
                         <li class="file-item">
-                            <!-- <i class="fas fa-link"></i> -->
                             <i class="fa-solid fa-link" style="color: #e2d5c5;"></i>
                             {{ url }}
                         </li>
@@ -175,7 +171,6 @@
             <header class="main-header">
                 <div class="brand">
                     <div class="brand-header">
-                        <!-- <span class="brand-icon">🧠</span> -->
                         <span class="brand-icon"><svg height="70px" xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 48 48">
                                 <defs>
@@ -206,7 +201,6 @@
                 {% if response %}
                 <div class="response-section">
                     <div class="response-container">
-                        <!-- <i class="fas fa-robot response-icon"></i> -->
                         <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 340" height="32px"
                             width="30px">
                             <path style="fill:#fff"
@@ -285,7 +279,6 @@
 
                 {% if generated_questions %}
                 <div class="generated-content">
-                    <!-- <h3><i class="fas fa-question-circle response-icon"></i> Common Questions</h3> -->
                     <h3 class="common-quest"><svg width="49px" height="30px" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -308,7 +301,6 @@
 
                 {% if key_concepts %}
                 <div class="generated-content">
-                    <!-- <h3><i class="fas fa-lightbulb response-icon"></i> Key Concepts</h3> -->
                     <h3><svg height="28px" width="24px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve"
                             fill="#000000">
@@ -760,7 +752,6 @@
             {% if recommendations %}
             <section class="recommendations">
                 <h2 class="recommendations-title">
-                    <!-- <i class="fas fa-video"></i> -->
                     <svg width="40px" height="55px" viewBox="0 0 1024 1024" class="icon" version="1.1"
                         xmlns="http://www.w3.org/2000/svg" fill="#000000">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -792,7 +783,6 @@
                         <div class="video-card">
                             <img src="{{ video.thumbnail_url }}" alt="Video thumbnail" class="video-thumbnail" loading="lazy">
                             <div class="video-overlay">
-                                <!-- <i class="fas fa-play-circle play-btn"></i> -->
                                 <svg height="35px" width="25px" version="1.1" id="Layer_1"
                                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                 viewBox="0 0 512 512" xml:space="preserve" fill="#000000">

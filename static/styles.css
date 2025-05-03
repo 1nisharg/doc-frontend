@@ -10,7 +10,6 @@
     --accent-primary: #6c23a4;
     --accent-secondary: #542277;
     --gradient : radial-gradient(#7c41aa, #542277);
-    /* --accent-gradient: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%); */
     --accent-gradient:linear-gradient(#7c41aa, #6c23a4);
     --danger: #ef4444;
     --success: #10b981;
