@@ -1,5 +1,6 @@
 /* Base Styles , Imports & Reset */
 @import url('https://fonts.googleapis.com/css?family=Urbanist:700|Urbanist:400|Urbanist:500|Urbanist:300|Urbanist:600');
+
 :root {
     --bg-primary: #0a0c0f;
     --bg-secondary: #12141a;
@@ -221,20 +222,20 @@
     gap: 0.6rem;
 }
 
-.generated-content h3 svg{
+.generated-content h3 svg {
     padding-bottom: 4px;
 }
 
-.generated-content .common-quest svg{
+.generated-content .common-quest svg {
     padding-right: 25px;
 }
 
-.generated-content .common-quest{
+.generated-content .common-quest {
     padding-right: 45px;
     gap: 0;
 }
 
-.generated-content .common-quest p{
+.generated-content .common-quest p {
     padding-left: 37px;
     gap: 0;
     position: absolute;
@@ -324,7 +325,7 @@ body {
     background-color: rgba(79, 70, 229, 0.1);
 }
 
-.drag-over{
+.drag-over {
     border-color: var(--accent-secondary);
     background-color: rgba(79, 70, 229, 0.1);
 }
@@ -355,13 +356,13 @@ body {
     font-weight: 500;
 }
 
-.upload-button{
+.upload-button {
     color: var(--accent-primary);
     font-family: 'Urbanist';
     font-weight: 500;
 }
 
-.upload-button:hover{
+.upload-button:hover {
     cursor: pointer;
 }
 
