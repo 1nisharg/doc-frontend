@@ -395,7 +395,7 @@
                 </form>
             </section>
             <div class="quick-actions">
-                <button onclick="trackAndExecute(event, 'generate_questions', generateQuestions)" class="quick-btn"
+                <button onclick="trackAndExecute(event, 'generate_questions', generateQuestions)" class="quick-btn question-btn-res"
                     data-tooltip="Ask AI-generated questions about your documents"><svg width="40px" height="35px"
                         viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -463,7 +463,7 @@
                                 fill="#29263B"></path>
                         </g>
                     </svg> Questions</button>
-                <button onclick="trackAndExecute(event, 'generate_concepts', generateConcepts)" class="quick-btn"
+                <button onclick="trackAndExecute(event, 'generate_concepts', generateConcepts)" class="quick-btn concepts-btn-res"
                     data-tooltip="Extract key concepts from your documents">
                     <svg height="18px" width="17px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                         xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512.001 512.001" xml:space="preserve"
@@ -993,7 +993,7 @@
         }
 
         function generateQuestions() {
-            const button = document.querySelector('.btn-secondary:first-of-type');
+            const button = document.querySelector('.question-btn-res');
             const originalText = showLoading(button);
 
             fetch('/generate_questions', {
@@ -1028,14 +1028,13 @@
                         }
                     }
                 })
-                .catch(error => console.error('Error:', error))
+                .catch(error => alert(data.error || 'Could not get questions'))
                 .finally(() => hideLoading(button, originalText));
         }
 
         function generateConcepts() {
-            const button = document.querySelector('.btn-secondary:last-of-type');
+            const button = document.querySelector('.concepts-btn-res');
             const originalText = showLoading(button);
-
             fetch('/generate_concepts', {
                 method: 'POST',
                 headers: {
@@ -1068,7 +1067,7 @@
                         }
                     }
                 })
-                .catch(error => console.error('Error:', error))
+                .catch(error => alert(data.error || 'Could not get concepts'))
                 .finally(() => hideLoading(button, originalText));
         }
 
