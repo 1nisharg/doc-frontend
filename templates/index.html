@@ -980,10 +980,14 @@
                 })
                 .finally(() => hideLoading(button, originalText));
         }
-        function showLoading(buttonElement) {
+        function showLoading(buttonElement,text) {
             const originalText = buttonElement.innerHTML;
             buttonElement.disabled = true;
-            buttonElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            if(text){
+                buttonElement.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Processing ${text}...`;
+            }else{
+                buttonElement.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Processing...`;
+            }
             return originalText;
         }
 
@@ -1130,7 +1134,7 @@
                 }
 
                 const submitBtn = urlForm.querySelector('.submit-btn');
-                const originalText = showLoading(submitBtn);
+                const originalText = showLoading(submitBtn,"URL");
 
                 fetch('/process_urls', {
                     method: 'POST',
